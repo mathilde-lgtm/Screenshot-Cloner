@@ -2,246 +2,268 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Screenshot Cloner — App Store</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:#0f0f13;color:#e8e6df;min-height:100vh;padding:24px;font-size:14px}
-#gate{position:fixed;inset:0;background:#0f0f13;display:flex;align-items:center;justify-content:center;z-index:999}
-#gbox{background:#1a1a22;border:1px solid #2a2a38;border-radius:14px;padding:32px;width:320px;text-align:center}
-#gbox h2{font-size:16px;font-weight:600;margin-bottom:6px}
-#gbox p{font-size:12px;color:#555;margin-bottom:20px}
-#gbox input{width:100%;background:#0f0f13;border:1px solid #2a2a38;border-radius:7px;padding:10px 14px;color:#e8e6df;font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:10px}
-#gbox input:focus{border-color:#7c6af7}
-#gbtn{width:100%;background:#7c6af7;color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:500;cursor:pointer}
-#gerr{font-size:12px;color:#ef4444;margin-top:8px;display:none}
-h1{font-size:20px;font-weight:600;margin-bottom:4px}
-.sub{color:#555;font-size:12px;margin-bottom:24px}
-.card{background:#1a1a22;border:1px solid #2a2a38;border-radius:12px;padding:20px;margin-bottom:14px}
-.sl{font-size:12px;font-weight:500;color:#777;margin-bottom:14px}
-label{display:block;font-size:11px;color:#555;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;margin-top:12px}
+body{font-family:system-ui,sans-serif;background:#09090f;color:#e8e6df;min-height:100vh;font-size:14px}
+.hero{padding:32px 24px 20px;border-bottom:1px solid #1e1e2a}
+.hero h1{font-size:22px;font-weight:600;letter-spacing:-.3px;margin-bottom:4px}
+.hero p{color:#555;font-size:12px}
+.main{padding:20px 24px;max-width:900px}
+.section{margin-bottom:20px}
+.section-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.section-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.icon-blue{background:#1c3a6e}
+.icon-purple{background:#2d1f5e}
+.icon-gray{background:#1e1e2a}
+.section-title{font-size:13px;font-weight:500;color:#aaa}
+.card{background:#12121a;border:1px solid #1e1e2a;border-radius:12px;padding:18px;margin-bottom:12px}
+label{display:block;font-size:11px;color:#555;margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px;margin-top:14px}
 label:first-child{margin-top:0}
-input[type=text],input[type=password],textarea,select{width:100%;background:#0f0f13;border:1px solid #2a2a38;border-radius:7px;padding:9px 12px;color:#e8e6df;font-size:13px;outline:none;font-family:inherit}
+input,textarea,select{width:100%;background:#09090f;border:1px solid #1e1e2a;border-radius:8px;padding:9px 12px;color:#e8e6df;font-size:13px;outline:none;font-family:inherit;transition:border .15s}
 input:focus,textarea:focus,select:focus{border-color:#7c6af7}
-textarea{resize:vertical;min-height:55px;line-height:1.5}
+input::placeholder,textarea::placeholder{color:#333}
+textarea{resize:vertical;min-height:52px;line-height:1.5}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .crow{display:flex;gap:8px;margin-bottom:8px;align-items:center}
 .crow input{flex:1}
-.rm{background:none;border:1px solid #2a2a38;border-radius:6px;color:#555;cursor:pointer;padding:7px 10px;font-size:14px;flex-shrink:0}
+.rm{background:none;border:1px solid #1e1e2a;border-radius:7px;color:#444;cursor:pointer;width:32px;height:36px;font-size:16px;flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center}
 .rm:hover{border-color:#ef4444;color:#ef4444}
-.add{background:none;border:1px dashed #2a2a38;border-radius:7px;color:#555;cursor:pointer;padding:8px;font-size:12px;width:100%;text-align:center}
+.add{background:none;border:1px dashed #1e1e2a;border-radius:8px;color:#444;cursor:pointer;padding:8px;font-size:12px;width:100%;text-align:center;transition:all .15s}
 .add:hover{border-color:#7c6af7;color:#7c6af7}
-.btn{display:block;width:100%;background:#7c6af7;color:#fff;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:500;cursor:pointer;margin-top:16px;text-align:center}
-.btn:disabled{opacity:.35;cursor:not-allowed}
-#log{background:#0a0a10;border:1px solid #1a1a28;border-radius:8px;padding:12px;font-size:12px;font-family:monospace;line-height:1.9;margin-top:14px;display:none;max-height:180px;overflow-y:auto}
-.ok{color:#22c55e}.er{color:#ef4444}.in{color:#7c6af7}.dm{color:#444}
-.results{display:none;margin-top:4px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-top:14px}
-.sc{background:#0f0f13;border:1px solid #2a2a38;border-radius:9px;overflow:hidden;transition:border .15s}
-.sc:hover{border-color:#7c6af7}
-.prev{width:100%;aspect-ratio:390/844;background:#111;overflow:hidden}
-.prev svg{width:100%;height:100%}
-.meta{padding:9px}
-.mt{font-size:11px;font-weight:500;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px}
-.dl{width:100%;background:#1a1a22;border:1px solid #2a2a38;border-radius:5px;padding:5px;font-size:11px;color:#666;cursor:pointer}
-.dl:hover{border-color:#7c6af7;color:#7c6af7}
-.dla{display:block;width:100%;background:#1a1a22;border:1px solid #2a2a38;border-radius:8px;padding:10px;color:#aaa;font-size:13px;cursor:pointer;margin-top:12px;text-align:center}
+.generate-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:linear-gradient(135deg,#6c5ce7,#7c6af7);color:#fff;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:600;cursor:pointer;margin-top:16px;letter-spacing:.2px;transition:opacity .2s}
+.generate-btn:disabled{opacity:.4;cursor:not-allowed}
+.generate-btn:not(:disabled):hover{opacity:.9}
+#log{background:#06060e;border:1px solid #1e1e2a;border-radius:8px;padding:12px;font-size:12px;font-family:monospace;line-height:1.9;margin-top:14px;display:none;max-height:150px;overflow-y:auto}
+.ok{color:#22c55e}.er{color:#ef4444}.in{color:#7c6af7}.dm{color:#333}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Results */
+#results{display:none;padding:0 24px 32px;max-width:900px}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:20px;border-top:1px solid #1e1e2a}
+.results-title{font-size:16px;font-weight:600}
+.dla{background:#12121a;border:1px solid #1e1e2a;border-radius:8px;padding:9px 16px;color:#888;font-size:12px;cursor:pointer;transition:all .15s}
 .dla:hover{border-color:#7c6af7;color:#7c6af7}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:14px}
+.sc{background:#12121a;border:1px solid #1e1e2a;border-radius:10px;overflow:hidden;transition:all .2s;cursor:pointer}
+.sc:hover{border-color:#7c6af7;transform:translateY(-2px)}
+.prev{width:100%;aspect-ratio:390/844;background:#06060e;overflow:hidden;position:relative}
+.prev svg{width:100%;height:100%}
+.meta{padding:10px}
+.mt{font-size:11px;font-weight:500;color:#ccc;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dl{width:100%;background:#09090f;border:1px solid #1e1e2a;border-radius:6px;padding:6px;font-size:11px;color:#666;cursor:pointer;transition:all .15s}
+.dl:hover{border-color:#7c6af7;color:#7c6af7}
+
+/* Tooltip/badge */
+.badge{display:inline-flex;align-items:center;gap:4px;background:#1c3a6e;color:#60a5fa;font-size:10px;padding:3px 8px;border-radius:20px;margin-left:8px;font-weight:500}
 </style>
 </head>
 <body>
 
-<div id="gate">
-  <div id="gbox">
-    <h2>Screenshot Cloner</h2>
-    <p>Entre le mot de passe pour accéder</p>
-    <input type="password" id="pw" placeholder="••••••••">
-    <button id="gbtn">Accéder →</button>
-    <div id="gerr">Mot de passe incorrect</div>
-  </div>
+<div class="hero">
+  <h1>Screenshot Cloner <span class="badge">✦ ASO</span></h1>
+  <p>Génère des screenshots App Store optimisés en analysant la concurrence — propulsé par Claude</p>
 </div>
 
-<h1>Screenshot Cloner</h1>
-<p class="sub">Génère des screenshots App Store optimisés en analysant la concurrence</p>
+<div class="main">
 
-<div class="card">
-  <div class="sl">🎯 Mon app</div>
-  <label>URL App Store</label>
-  <input type="text" id="myUrl" placeholder="https://apps.apple.com/fr/app/mon-app/id...">
-  <label>Infos supplémentaires (optionnel)</label>
-  <textarea id="extra" placeholder="Ex: dark mode, cible 25-40 ans, différenciation..."></textarea>
-</div>
-
-<div class="card">
-  <div class="sl">🔍 Concurrents à analyser</div>
-  <div id="clist">
-    <div class="crow"><input type="text" class="cu" placeholder="https://apps.apple.com/fr/app/concurrent/id..."><button class="rm" onclick="rm(this)">×</button></div>
-    <div class="crow"><input type="text" class="cu" placeholder="https://apps.apple.com/fr/app/concurrent/id..."><button class="rm" onclick="rm(this)">×</button></div>
-  </div>
-  <button class="add" onclick="addC()">+ Ajouter un concurrent</button>
-</div>
-
-<div class="card">
-  <div class="sl">⚙️ Paramètres</div>
-  <div class="r2">
-    <div>
-      <label>Clé API Anthropic</label>
-      <input type="password" id="apiKey" placeholder="sk-ant-api03-...">
+  <!-- Mon app -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🎯</div>
+      <span class="section-title">Mon app</span>
     </div>
-    <div>
-      <label>Nombre de screenshots</label>
-      <select id="n">
-        <option value="3">3 screenshots</option>
-        <option value="4" selected>4 screenshots</option>
-        <option value="5">5 screenshots</option>
-      </select>
+    <div class="card">
+      <label>URL App Store</label>
+      <input type="text" id="myUrl" placeholder="https://apps.apple.com/fr/app/mon-app/id...">
+      <label>Contexte supplémentaire <span style="color:#333;font-size:10px;text-transform:none;letter-spacing:0">(optionnel)</span></label>
+      <textarea id="extra" placeholder="Ex: fond sombre, cible 25-40 ans, différenciation clé, couleurs principales..."></textarea>
     </div>
   </div>
-  <button class="btn" id="go">Générer les screenshots</button>
-  <div id="log"></div>
+
+  <!-- Concurrents -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🔍</div>
+      <span class="section-title">Concurrents à analyser</span>
+    </div>
+    <div class="card">
+      <div id="clist">
+        <div class="crow"><input type="text" class="cu" placeholder="https://apps.apple.com/fr/app/concurrent/id..."><button class="rm" onclick="rm(this)">×</button></div>
+        <div class="crow"><input type="text" class="cu" placeholder="https://apps.apple.com/fr/app/concurrent/id..."><button class="rm" onclick="rm(this)">×</button></div>
+      </div>
+      <button class="add" onclick="addC()">+ Ajouter un concurrent</button>
+    </div>
+  </div>
+
+  <!-- Paramètres -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-gray">⚙️</div>
+      <span class="section-title">Paramètres</span>
+    </div>
+    <div class="card">
+      <div class="r2">
+        <div>
+          <label>Clé API Anthropic</label>
+          <input type="password" id="apiKey" placeholder="sk-ant-api03-...">
+        </div>
+        <div>
+          <label>Nombre de screenshots</label>
+          <select id="n">
+            <option value="3">3 screenshots</option>
+            <option value="4" selected>4 screenshots</option>
+            <option value="5">5 screenshots</option>
+          </select>
+        </div>
+      </div>
+      <button class="generate-btn" id="go">
+        <span id="btn-label">Générer les screenshots</span>
+      </button>
+      <div id="log"></div>
+    </div>
+  </div>
+
 </div>
 
-<div class="results card" id="results">
-  <div style="font-size:15px;font-weight:500;margin-bottom:2px" id="rtitle">Screenshots générés</div>
+<!-- Résultats -->
+<div id="results">
+  <div class="results-header">
+    <div class="results-title" id="rtitle">Screenshots générés</div>
+    <button class="dla" id="dla">↓ Tout télécharger</button>
+  </div>
   <div class="grid" id="grid"></div>
-  <button class="dla" id="dla">↓ Télécharger tous les SVG</button>
 </div>
 
 <script>
 var svgs = [];
-var PASS = 'demo2024';
 
-// Gate
-document.getElementById('gbtn').onclick = checkPw;
-document.getElementById('pw').onkeydown = function(e){ if(e.key==='Enter') checkPw(); };
-function checkPw(){
-  if(document.getElementById('pw').value === PASS){
-    document.getElementById('gate').style.display='none';
-  } else {
-    document.getElementById('gerr').style.display='block';
-    document.getElementById('pw').value='';
-  }
-}
-
-function log(msg,t){
-  var el=document.getElementById('log');
-  el.style.display='block';
-  var d=document.createElement('div');
-  d.className=t||'dm';
-  d.textContent=(t==='ok'?'✓ ':t==='er'?'✗ ':t==='in'?'→ ':'  ')+msg;
+function log(msg, t) {
+  var el = document.getElementById('log');
+  el.style.display = 'block';
+  var d = document.createElement('div');
+  d.className = t || 'dm';
+  d.textContent = (t==='ok'?'✓ ':t==='er'?'✗ ':t==='in'?'→ ':'  ') + msg;
   el.appendChild(d);
-  el.scrollTop=el.scrollHeight;
+  el.scrollTop = el.scrollHeight;
 }
 
-function addC(){
-  var r=document.createElement('div');
-  r.className='crow';
-  r.innerHTML='<input type="text" class="cu" placeholder="https://apps.apple.com/fr/app/concurrent/id..."><button class="rm" onclick="rm(this)">×</button>';
+function addC() {
+  var r = document.createElement('div');
+  r.className = 'crow';
+  r.innerHTML = '<input type="text" class="cu" placeholder="https://apps.apple.com/fr/app/concurrent/id..."><button class="rm" onclick="rm(this)">×</button>';
   document.getElementById('clist').appendChild(r);
 }
 
-function rm(b){
-  if(document.querySelectorAll('.crow').length>1) b.parentElement.remove();
+function rm(b) {
+  if (document.querySelectorAll('.crow').length > 1) b.parentElement.remove();
 }
 
-function extractId(url){
-  var m=(url||'').match(/id(\d+)/);
-  return m?m[1]:null;
-}
-
-function dlSVG(i){
-  var s=svgs[i]; if(!s)return;
-  var b=new Blob([s.svgContent],{type:'image/svg+xml'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(b);
-  a.download='screenshot-'+(i+1)+'.svg';
+function dlSVG(i) {
+  var s = svgs[i]; if (!s) return;
+  var b = new Blob([s.svgContent], {type:'image/svg+xml'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'screenshot-'+(i+1)+'.svg';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
-function render(shots,name){
-  var g=document.getElementById('grid');
-  g.innerHTML=''; svgs=shots;
-  document.getElementById('rtitle').textContent=name+' — '+shots.length+' screenshots';
-  shots.forEach(function(s,i){
-    var d=document.createElement('div');
-    d.className='sc';
-    d.innerHTML='<div class="prev" id="p'+i+'"></div><div class="meta"><div class="mt">'+(s.title||'Screenshot '+(i+1))+'</div><button class="dl" data-i="'+i+'">↓ SVG</button></div>';
+function render(shots, name) {
+  var g = document.getElementById('grid');
+  g.innerHTML = ''; svgs = shots;
+  document.getElementById('rtitle').textContent = name + ' — ' + shots.length + ' screenshots';
+  shots.forEach(function(s, i) {
+    var d = document.createElement('div');
+    d.className = 'sc';
+    d.innerHTML = '<div class="prev" id="p'+i+'"></div><div class="meta"><div class="mt">'+(s.title||'Screenshot '+(i+1))+'</div><button class="dl" data-i="'+i+'">↓ Télécharger SVG</button></div>';
     g.appendChild(d);
-    setTimeout(function(x){var p=document.getElementById('p'+x);if(shots[x]&&shots[x].svgContent)p.innerHTML=shots[x].svgContent;},60,i);
+    setTimeout(function(x) {
+      var p = document.getElementById('p'+x);
+      if (shots[x] && shots[x].svgContent) p.innerHTML = shots[x].svgContent;
+    }, 60, i);
   });
-  document.getElementById('results').style.display='block';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-document.getElementById('go').addEventListener('click', async function(){
-  var myUrl=document.getElementById('myUrl').value.trim();
-  var extra=document.getElementById('extra').value.trim();
-  var apiKey=document.getElementById('apiKey').value.trim();
-  var n=parseInt(document.getElementById('n').value);
-  var compUrls=Array.from(document.querySelectorAll('.cu')).map(function(i){return i.value.trim();}).filter(Boolean);
-
-  document.getElementById('log').innerHTML='';
-  document.getElementById('log').style.display='none';
-  document.getElementById('results').style.display='none';
-
-  if(!myUrl){log('Entre l\'URL de ton app','er');return;}
-  if(!compUrls.length){log('Ajoute au moins un concurrent','er');return;}
-  if(!apiKey){log('Entre ta clé API Anthropic','er');return;}
-  if(!apiKey.startsWith('sk-ant-')){log('Clé API invalide','er');return;}
-  if(!extractId(myUrl)){log('URL invalide — doit contenir "id..."','er');return;}
-
-  this.disabled=true;
-  log('Analyse et génération en cours...','in');
-  log('Patiente 30 à 60 secondes...','dm');
-
-  // Build prompt avec les URLs — Claude les connaît et extrait les infos
-  var compList=compUrls.map(function(u,i){return 'Concurrent '+(i+1)+': '+u;}).join('\n');
-
-  var prompt='Tu es un expert ASO senior spécialisé en screenshots App Store iOS.\n\nMON APP: '+myUrl+'\nConcurrents à analyser:\n'+compList+'\n\n'+(extra?'Infos supplémentaires: '+extra+'\n\n':'')+'À partir de ces URLs App Store, tu connais ces apps. Analyse les descriptions, styles visuels et patterns de screenshots des concurrents.\n\nGénère '+n+' screenshots SVG 390x844px pour MON APP qui:\n- S\'inspirent des meilleurs patterns visuels des concurrents\n- Forment une séquence cohérente (même palette, même énergie visuelle)\n- Suivent: bénéfice choc → démo UX → feature unique → CTA\n- Respectent le design system de l\'app (couleurs, style iOS)\n\nRÈGLES SVG STRICTES:\n- viewBox="0 0 390 844"\n- Fond noir ou sombre comme premier élément\n- Status bar: "9:41" x=20 y=22 fill=#fff font-size=15\n- Titre: font-size=36 font-weight=700 fill=#FFFFFF text-anchor=middle x=195 y=92\n- Sous-titre: font-size=16 fill=#8E8E93 text-anchor=middle x=195 y=148\n- Illustration SVG native entre y=175 et y=680\n- Nom app font-size=12 fill=#555 text-anchor=middle x=195 y=830\n- PAS foreignObject, PAS images externes, UNIQUEMENT primitives SVG\n- SVG compact (max 100 éléments)\n\nRéponds UNIQUEMENT en JSON valide sans markdown:\n{"screenshots":[{"title":"...","svgContent":"<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 390 844\'>...</svg>"}]}';
-
-  try{
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:9000,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-
-    if(!resp.ok){
-      var e=await resp.json();
-      throw new Error('Claude: '+(e.error&&e.error.message||resp.status));
-    }
-
-    var data=await resp.json();
-    var tb=data.content.find(function(b){return b.type==='text';});
-    if(!tb) throw new Error('Pas de réponse texte');
-    var raw=tb.text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
-    var m=raw.match(/\{[\s\S]*\}/);
-    if(!m) throw new Error('JSON introuvable dans la réponse');
-    var parsed=JSON.parse(m[0]);
-    var shots=parsed.screenshots||[];
-    if(!shots.length) throw new Error('Aucun screenshot généré');
-
-    log(shots.length+' screenshots générés !','ok');
-    render(shots, myUrl.match(/\/app\/([^\/]+)\//)?.[1]||'Mon App');
-  } catch(e){
-    log(e.message,'er');
+function setLoading(on) {
+  var btn = document.getElementById('go');
+  var lbl = document.getElementById('btn-label');
+  btn.disabled = on;
+  if (on) {
+    lbl.textContent = 'Génération en cours...';
+    btn.insertAdjacentHTML('afterbegin', '<div class="spinner"></div>');
+  } else {
+    lbl.textContent = 'Générer les screenshots';
+    var sp = btn.querySelector('.spinner');
+    if (sp) sp.remove();
   }
-  this.disabled=false;
-});
+}
 
-document.getElementById('grid').addEventListener('click',function(e){
-  if(e.target.classList.contains('dl')) dlSVG(parseInt(e.target.dataset.i));
-});
-document.getElementById('dla').addEventListener('click',function(){
-  svgs.forEach(function(_,i){setTimeout(function(){dlSVG(i);},i*400);});
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.getElementById('go').addEventListener('click', async function() {
+    var myUrl = document.getElementById('myUrl').value.trim();
+    var extra = document.getElementById('extra').value.trim();
+    var apiKey = document.getElementById('apiKey').value.trim();
+    var n = parseInt(document.getElementById('n').value);
+    var comps = Array.from(document.querySelectorAll('.cu')).map(function(i){return i.value.trim();}).filter(Boolean);
+
+    document.getElementById('log').innerHTML = '';
+    document.getElementById('log').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+
+    if (!myUrl) { log("Entre l'URL de ton app", 'er'); return; }
+    if (!comps.length) { log('Ajoute au moins un concurrent', 'er'); return; }
+    if (!apiKey) { log('Entre ta clé API Anthropic', 'er'); return; }
+    if (!apiKey.startsWith('sk-ant-')) { log('Clé API invalide (doit commencer par sk-ant-)', 'er'); return; }
+
+    setLoading(true);
+    log('Analyse des apps et génération...', 'in');
+    log('Patiente 30 à 60 secondes...', 'dm');
+
+    var compList = comps.map(function(u,i){return 'Concurrent '+(i+1)+': '+u;}).join('\n');
+
+    var prompt = 'Tu es un expert ASO senior spécialisé en screenshots App Store iOS.\n\nMON APP: '+myUrl+'\nCONCURRENTS:\n'+compList+(extra?'\n\nContexte supplémentaire: '+extra:'')+'\n\nTu connais ces apps App Store. Analyse finement les descriptions, styles visuels et patterns de screenshots des concurrents.\n\nGénère '+n+' screenshots SVG 390x844px pour MON APP qui:\n1. S\'inspirent des MEILLEURS patterns visuels et copywriting des concurrents\n2. Forment une séquence narrative cohérente (même palette, même énergie visuelle)\n3. Suivent la séquence gagnante: bénéfice choc → démo UX → feature unique → CTA\n4. Respectent parfaitement le design system de l\'app (couleurs, style iOS, typographie)\n5. Utilisent un copywriting orienté bénéfice avec chiffres concrets\n\nRÈGLES SVG ABSOLUES:\n- viewBox="0 0 390 844"\n- Fond comme premier élément rect width=390 height=844\n- Status bar: texte "9:41" x=20 y=22 fill=#fff font-size=15 font-weight=500\n- Titre: font-size=36 font-weight=700 fill=#FFFFFF text-anchor=middle x=195 y=92 (max 2 lignes avec tspan dy=44)\n- Sous-titre: font-size=16 fill=#8E8E93 text-anchor=middle x=195 y=148\n- Illustration SVG native riche entre y=175 et y=680 (mockups UI, formes géométriques, icônes SVG)\n- Nom app: font-size=12 fill=#444 text-anchor=middle x=195 y=830\n- JAMAIS foreignObject, JAMAIS d\'images externes\n- UNIQUEMENT primitives SVG (rect, circle, path, line, text, g, defs, linearGradient)\n- Maximum 100 éléments par SVG\n\nRéponds UNIQUEMENT en JSON valide sans markdown:\n{"screenshots":[{"title":"...","svgContent":"<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 390 844\'>...</svg>"}]}';
+
+    try {
+      var resp = await fetch('https://fancy-rice-2d35.mathilde-f04.workers.dev', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({apiKey: apiKey, prompt: prompt})
+      });
+
+      if (!resp.ok) {
+        var e = await resp.json();
+        throw new Error('Erreur API: '+(e.error&&e.error.message||resp.status));
+      }
+      var data = await resp.json();
+      var tb = data.content.find(function(b){return b.type==='text';});
+      if (!tb) throw new Error('Pas de réponse texte de Claude');
+      var raw = tb.text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      var m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error('Format de réponse invalide');
+      var parsed = JSON.parse(m[0]);
+      var shots = parsed.screenshots || [];
+      if (!shots.length) throw new Error('Aucun screenshot dans la réponse');
+
+      log(shots.length + ' screenshots générés avec succès !', 'ok');
+      var appName = myUrl.match(/\/app\/([^/]+)\//)?.[1]?.replace(/-/g,' ') || 'Mon App';
+      render(shots, appName);
+    } catch(e) {
+      log(e.message, 'er');
+    }
+    setLoading(false);
+  });
+
+  document.getElementById('grid').addEventListener('click', function(e) {
+    if (e.target.classList.contains('dl')) dlSVG(parseInt(e.target.dataset.i));
+  });
+
+  document.getElementById('dla').addEventListener('click', function() {
+    svgs.forEach(function(_,i){setTimeout(function(){dlSVG(i);},i*400);});
+  });
+
 });
 </script>
 </body>
